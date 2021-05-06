@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "2508884314",
+    "firebase_url": "https://homephiys.firebaseio.com",
+    "project_id": "homephiys",
+    "storage_bucket": "homephiys.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2508884314:android:ecb9a599777131f8b18b63",
+        "android_client_info": {
+          "package_name": "com.company.appTest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2508884314-pih6hjaplgar1evc3e66kk4645efa4c0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpfM1GcXxIUgmJc3vSdRY3kTPr-FOyM5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2508884314-pih6hjaplgar1evc3e66kk4645efa4c0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
