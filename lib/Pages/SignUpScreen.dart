@@ -182,6 +182,12 @@ Widget _buildSignUpBtn(
           if (value == true) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => LoginScreen()));
+          } else {
+            Toast.show(
+                "Email or password are not correct \nPassword should be at least 6 charactres or email allready exsist please try again",
+                context,
+                duration: Toast.LENGTH_LONG,
+                gravity: Toast.BOTTOM);
           }
         });
       },

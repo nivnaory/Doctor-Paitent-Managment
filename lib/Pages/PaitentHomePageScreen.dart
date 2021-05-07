@@ -39,9 +39,10 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
     Stream stream = this.widget.streamController.stream;
     stream.listen((event) {
       Doctor d = event;
-      if (d.waitingPaitentList[0].paitent.email ==
+      if (d.waitingPaitentList.isNotEmpty) if (d
+              .waitingPaitentList[0].paitent.email ==
           this.widget.currentPaitent.email) {
-        this.widget.streamControllerNotification.add(true);
+        // this.widget.streamControllerNotification.add(true);
         AwesomeDialog(
           context: context,
           dialogType: DialogType.INFO,
@@ -53,15 +54,14 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
             //so need to find the current doctor and to update his list
             this.widget.dcontroller.removerPaitnetFromWaitingList(
                 d.email, this.widget.currentPaitent.email);
-
             this.widget.dcontroller.updateDoctor(d.email, false);
-            d.isAvilable = false;
-            /*
-             for(int i=0;i<this.widget.doctors.length;i++){
-               if(this.widget.doctors[i].email==d.email){
-             
-               }               */
 
+            //find doctor by email
+            Future<Doctor> futrueDocotor =
+                this.widget.dcontroller.getDoctor(d.email);
+            futrueDocotor.then((value) {
+              d = value;
+            });
             //user press ok and now to doctor is again unavailable
             // for x period of time!
           },
@@ -278,10 +278,9 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
           for (int i = 0; i < this.widget.doctors.length; i++) {
             if (element.document.data['email'] ==
                     this.widget.doctors[i].email &&
-                element.document.data['isAvailable'] !=
-                    this.widget.doctors[i].isAvilable) {
-              this.widget.doctors[i].isAvilable =
-                  element.document.data['isAvailable'];
+                element.document.data['isAvailable'] == true &&
+                this.widget.doctors[i].isAvilable == false) {
+              this.widget.doctors[i].isAvilable = true;
               this.widget.streamController.add(this.widget.doctors[i]);
             }
           }
