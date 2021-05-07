@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:homephiys/Controller/DoctorController.dart';
 import 'package:homephiys/Controller/PaitentController.dart';
 import 'package:homephiys/Entitys/Doctor.dart';
+import 'package:homephiys/Entitys/WaitingPaitent.dart';
 import 'package:homephiys/Pages/DoctorHomeScreen.dart';
 import 'package:homephiys/Pages/LoginScreen.dart';
 
@@ -204,11 +205,16 @@ Widget _buildLoginBtn(
               Future<Doctor> futureDoctor =
                   dcontroller.getDoctor(email.text.trim());
               futureDoctor.then((doctor) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            DoctorHomeScreen(currentDoctor: doctor)));
+                Future<List<WaitingPaitent>> futureWaitingPaitent =
+                    controller.getPaitnetWaitingList(doctor.email);
+                futureWaitingPaitent.then((waitingPaitent) {
+                  doctor.waitingPaitentList = waitingPaitent;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DoctorHomeScreen(currentDoctor: doctor)));
+                });
               });
             } else {
               Toast.show("Login Failed", context,

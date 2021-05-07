@@ -82,7 +82,7 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                           child: CircleAvatar(
                             foregroundColor: Colors.green,
                             backgroundImage: NetworkImage(
-                                "https://lh3.googleusercontent.com/proxy/MLN6Ito1zc6imYm07IurX8H8fngFETE4NS9LTngHzsp5ghi95BUPUhfQyNYQCbDgz4N8HyQIGd-MK_ZAdkB1FfCOTCi1c9Jtr7E5L9jhnEbOc4VI595m"),
+                                "https://www.nicepng.com/png/detail/780-7805650_generic-user-image-male-man-cartoon-no-eyes.png"),
                           ),
                         ),
                         Column(

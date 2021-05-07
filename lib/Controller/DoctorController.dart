@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homephiys/Controller/PaitentController.dart';
 import 'package:homephiys/Entitys/Doctor.dart';
+import 'package:homephiys/Entitys/Paitnet.dart';
 import 'package:homephiys/Entitys/WaitingPaitent.dart';
 
 //this function  handel the connection to database
@@ -66,20 +67,16 @@ class DoctorController {
             element['email'], element['name'].toString(), isAvailable);
         alldoctors.add(newDoctor);
 
-        //get the paitentList but need to check of collection exsist!
         Future<List<WaitingPaitent>> futureWaitingPaitent =
             pController.getPaitnetWaitingList(element['email'].toString());
         futureWaitingPaitent.then((waitingPaitent) {
-          print("im here niv naory");
           newDoctor.waitingPaitentList = waitingPaitent;
         });
       });
-
-      //  return alldoctors;
       return Future.value(alldoctors);
     } catch (e) {
       print(e);
-      return null;
+      return Future.value(null);
     }
   }
 

@@ -31,12 +31,11 @@ class _WaitingForAppointment extends State<WaitingForAppointmentScreen> {
     paitentFutureList.then((paitentList) {
       this.widget.patientNames = List.from(paitentList);
     });
-    /*
+
     Stream stream = this.widget.streamController.stream;
     stream.listen((event) {
       this.widget.is_got_notification = event;
     });
-    */
 
     super.initState();
   }

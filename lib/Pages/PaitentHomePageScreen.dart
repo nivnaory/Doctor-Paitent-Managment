@@ -12,7 +12,8 @@ import 'package:homephiys/utilitis/constant.dart';
 
 class PaitnetHomePageScreen extends StatefulWidget {
   StreamController<Doctor> streamController = StreamController();
-  StreamController<bool> streamControllerNotification = StreamController();
+  StreamController<bool> streamControllerNotification =
+      StreamController<bool>.broadcast();
   _PaitnetHomePageScreen createState() => _PaitnetHomePageScreen();
   final CollectionReference doctorCollection =
       Firestore.instance.collection("Doctors");
@@ -185,9 +186,18 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                               context: context,
                               dialogType: DialogType.SUCCES,
                               animType: AnimType.BOTTOMSLIDE,
-                              title: 'Thank you',
-                              desc: 'an appointment has been made for you',
+                              title: ' you choose  ' +
+                                  this
+                                      .widget
+                                      .dynamicListOfDoctors[index]
+                                      .name
+                                      .toString(),
+                              desc: 'for making  an appointment press OK',
                               btnOkOnPress: () {
+                                this
+                                    .widget
+                                    .dynamicListOfDoctors[index]
+                                    .isAvilable = false;
                                 this.widget.dcontroller.updateDoctor(
                                     this
                                         .widget
@@ -304,3 +314,33 @@ class ListItem {
 
   ListItem(this.value, this.name);
 }
+
+/*
+  List<bool> checkIfPaitnetsIsInPaitnetList(String email) {
+    List<bool> boolList = [];
+    print(this.widget.doctors[1].waitingPaitentList.length);
+    for (int i = 0; i < this.widget.doctors.length; i++) {
+      if (checkIfPaitnetIsInPaitnetList(i)) {
+        boolList.add(true);
+      } else {
+        boolList.add(false);
+      }
+    }
+
+    return boolList;
+  }
+
+  bool checkIfPaitnetIsInPaitnetList(int i) {
+    print("im inside check!!!");
+    print(this.widget.doctors[i].waitingPaitentList);
+    for (int j = 0; j < this.widget.doctors[i].waitingPaitentList.length; j++) {
+      print(this.widget.doctors[i].waitingPaitentList[j].paitent.email);
+      if (this.widget.doctors[i].waitingPaitentList[j].paitent.email ==
+          this.widget.currentPaitent.email) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+*/

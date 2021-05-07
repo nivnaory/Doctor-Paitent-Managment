@@ -5,6 +5,7 @@ import 'package:homephiys/Controller/DoctorController.dart';
 import 'package:homephiys/Controller/PaitentController.dart';
 import 'package:homephiys/Entitys/Doctor.dart';
 import 'package:homephiys/Entitys/Paitnet.dart';
+import 'package:homephiys/Entitys/WaitingPaitent.dart';
 import 'package:homephiys/Pages/DoctorLoginScreen.dart';
 
 import 'package:homephiys/utilitis/constant.dart';
@@ -209,7 +210,8 @@ Widget _buildLoginBtn(
               Future<List<Doctor>> futureDoctors =
                   dcontroller.getAllDoctorFromDB();
               futureDoctors.then((doctors) {
-                print(doctors);
+                print("im after get all doctors");
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(

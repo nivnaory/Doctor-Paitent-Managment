@@ -32,8 +32,6 @@ class PaitentController {
 
   Future<bool> loginPaitent(String email, String password) async {
     try {
-      print(email);
-      print(password);
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       return Future.value(true);
@@ -64,11 +62,12 @@ class PaitentController {
       var snapshotWaitingPaitent = await doctorCollection
           .document(doctorEmail)
           .collection("paitents_waiting")
+          .orderBy("time")
           .getDocuments();
 
       snapshotWaitingPaitent.documents.forEach((element) {
         DateTime arrivalTime = element['time'].toDate();
-        print(arrivalTime);
+
         WaitingPaitent waitingPaitent = WaitingPaitent(
             new Paitent(
                 element['paitent'].toString(), (element['name'].toString())),
