@@ -149,6 +149,14 @@ class DoctorController {
 
   Future<bool> removerPaitnetFromWaitingList(
       String doctorEmail, String paitentEmail) async {
+    /*
+    Firestore.instance
+        .collection("Doctors")
+        .document(doctorEmail)
+        .collection("paitents_waiting")
+        .document(paitentEmail)
+        .delete();
+        */
     try {
       return Future.value(true);
     } catch (e) {

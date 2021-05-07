@@ -1,13 +1,17 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:homephiys/Controller/DoctorController.dart';
+import 'package:homephiys/Controller/PaitentController.dart';
 import 'package:homephiys/Entitys/Doctor.dart';
+import 'package:homephiys/Entitys/WaitingPaitent.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   _DoctorHomeScreen createState() => _DoctorHomeScreen();
   Doctor currentDoctor;
+  PaitentController pcontroller = new PaitentController();
   bool isAvailable = false;
 
   final DoctorController dcontroller = DoctorController();
@@ -118,17 +122,6 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(
                           horizontal: 10.0, vertical: 10.0),
-                      child: FlatButton(
-                        onPressed: () {},
-                        color: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Text(
-                          "choose",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
                     )
                   ],
                 ),
@@ -149,11 +142,11 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
         onPressed: () {
           setState(() {
             if (this.widget.isAvailable == false) {
-              this.widget.isAvailable = true;
-              this
-                  .widget
-                  .dcontroller
-                  .updateDoctor(this.widget.currentDoctor.email, true);
+              if (this.widget.currentDoctor.waitingPaitentList.isEmpty) {
+                this.widget.isAvailable = true;
+              } else {
+                showDialog();
+              }
             } else {
               this.widget.isAvailable = false;
               this
@@ -180,6 +173,37 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
         ),
       ),
     );
+  }
+
+  void showDialog() {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'Medical appointment',
+      desc: "You received the patient " +
+          this
+              .widget
+              .currentDoctor
+              .waitingPaitentList[0]
+              .paitent
+              .name
+              .toString(),
+      btnOkOnPress: () {
+        this
+            .widget
+            .dcontroller
+            .updateDoctor(this.widget.currentDoctor.email, true);
+        Future<List<WaitingPaitent>> futureWaitingPaitent = this
+            .widget
+            .pcontroller
+            .getPaitnetWaitingList(this.widget.currentDoctor.email);
+        futureWaitingPaitent.then((waitingPaitent) {
+          this.widget.currentDoctor.waitingPaitentList = waitingPaitent;
+          print(this.widget.currentDoctor.waitingPaitentList);
+        });
+      },
+    )..show();
   }
 }
 
