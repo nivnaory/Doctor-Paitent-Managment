@@ -296,11 +296,12 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
         context: context,
         dialogType: DialogType.INFO,
         animType: AnimType.BOTTOMSLIDE,
-        title: 'hello',
+        title: 'Hello',
         desc: 'your  appointment is ready press ok to start',
         btnOkOnPress: () {
           //this is need to return a new watinigPaitentList
           //so need to find the current doctor and to update his list
+          this.widget.streamControllerNotification.add(true);
           this.widget.dcontroller.removerPaitnetFromWaitingList(
               this.widget.doctors[index].email,
               this.widget.currentPaitent.email);
@@ -326,14 +327,6 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
           // for x period of time!
         })
       ..show();
-  }
-
-  Doctor findDoctorByEmail(String _email) {
-    for (int i = 0; i < this.widget.doctors.length; i++) {
-      if (this.widget.doctors[i].email == _email) {
-        return this.widget.doctors[i];
-      }
-    }
   }
 }
 

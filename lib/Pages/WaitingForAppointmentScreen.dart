@@ -79,7 +79,7 @@ class _WaitingForAppointment extends State<WaitingForAppointmentScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "You are on the WaitingList!\n\npress on the watch list buttons  to see who is in line for the doctor in front of you ",
+                        "You are on the Waiting List!\n\npress on the watch list buttons  to see who is in line for the doctor in front of you ",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'OpenSans',

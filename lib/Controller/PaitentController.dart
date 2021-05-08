@@ -75,7 +75,7 @@ class PaitentController {
 
         waitingList.add(waitingPaitent);
       });
-      print("i have read" + waitingList.length.toString());
+
       return Future.value(waitingList);
     } catch (e) {
       print(e);
