@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -7,9 +8,12 @@ import 'package:homephiys/Controller/DoctorController.dart';
 import 'package:homephiys/Controller/PaitentController.dart';
 import 'package:homephiys/Entitys/Doctor.dart';
 import 'package:homephiys/Entitys/WaitingPaitent.dart';
+import 'package:homephiys/utilitis/constant.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   _DoctorHomeScreen createState() => _DoctorHomeScreen();
+  final CollectionReference doctorCollection =
+      Firestore.instance.collection("Doctors");
   Doctor currentDoctor;
   PaitentController pcontroller = new PaitentController();
   bool isAvailable = false;
@@ -206,8 +210,17 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
       },
     )..show();
   }
-}
 
+  void ListinerToDBChange() {
+    this.widget.doctorCollection.snapshots().listen((querySnapshot) {
+      querySnapshot.documentChanges.forEach((element) {
+        if (element.type.index == modifed) {
+          print(element.document.data);
+        }
+      });
+    });
+  }
+}
 /*
   setState(() {
             if (this.widget.isAvailable == false)

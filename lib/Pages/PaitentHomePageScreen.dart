@@ -64,7 +64,6 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                 d.email, this.widget.currentPaitent.email);
             //need to change this!
             this.widget.dcontroller.updateDoctor(d.email, false);
-
             //find doctor by email
             Future<Doctor> futrueDocotor =
                 this.widget.dcontroller.getDoctor(d.email);
@@ -247,13 +246,6 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                                       .widget
                                       .doctors[index]
                                       .waitingPaitentList = value;
-                                  print("im here!!!!! niv naory " +
-                                      value.toString());
-                                  print(this
-                                      .widget
-                                      .doctors[index]
-                                      .waitingPaitentList
-                                      .toString());
                                 });
 
                                 f.then((value) {
@@ -317,8 +309,6 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
       querySnapshot.documentChanges.forEach((element) {
         // if db modifed
         if (element.type.index == modifed) {
-          print("length" +
-              this.widget.doctors[2].waitingPaitentList.length.toString());
           for (int i = 0; i < this.widget.doctors.length; i++) {
             if (element.document.data['email'] ==
                     this.widget.doctors[i].email &&
@@ -350,13 +340,10 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
           this.widget.dcontroller.removerPaitnetFromWaitingList(
               this.widget.doctors[index].email,
               this.widget.currentPaitent.email);
-          print("im after remove!!!");
-
           this
               .widget
               .dcontroller
               .updateDoctor(this.widget.doctors[index].email, false);
-
           Future<List<WaitingPaitent>> futureWaiting = this
               .widget
               .pcontroller
@@ -367,7 +354,6 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
             else {
               this.widget.doctors[index].waitingPaitentList.clear();
             }
-            print("im here!!!!!" + value.toString());
           });
 
           //find doctor by email
@@ -393,33 +379,3 @@ class ListItem {
 
   ListItem(this.value, this.name);
 }
-
-/*
-  List<bool> checkIfPaitnetsIsInPaitnetList(String email) {
-    List<bool> boolList = [];
-    print(this.widget.doctors[1].waitingPaitentList.length);
-    for (int i = 0; i < this.widget.doctors.length; i++) {
-      if (checkIfPaitnetIsInPaitnetList(i)) {
-        boolList.add(true);
-      } else {
-        boolList.add(false);
-      }
-    }
-
-    return boolList;
-  }
-
-  bool checkIfPaitnetIsInPaitnetList(int i) {
-    print("im inside check!!!");
-    print(this.widget.doctors[i].waitingPaitentList);
-    for (int j = 0; j < this.widget.doctors[i].waitingPaitentList.length; j++) {
-      print(this.widget.doctors[i].waitingPaitentList[j].paitent.email);
-      if (this.widget.doctors[i].waitingPaitentList[j].paitent.email ==
-          this.widget.currentPaitent.email) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-*/

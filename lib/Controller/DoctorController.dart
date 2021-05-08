@@ -117,7 +117,8 @@ class DoctorController {
       await doctorCollection
           .document(doctorEmail)
           .collection("paitents_waiting")
-          .add({'paitent': paitentEmail, "time": now, "name": paitentName});
+          .document(paitentEmail)
+          .setData({'paitent': paitentEmail, "time": now, "name": paitentName});
 
       return Future.value(true);
     } catch (e) {
@@ -154,12 +155,8 @@ class DoctorController {
       await doctorCollection
           .document(doctorEmail)
           .collection("paitents_waiting")
-          .where('paitent', isEqualTo: paitentEmail)
-          .getDocuments()
-          .then((value) {
-        value.documents.single.reference.delete();
-      });
-
+          .document(paitentEmail)
+          .delete();
       return Future.value(true);
     } catch (e) {
       print(e);
