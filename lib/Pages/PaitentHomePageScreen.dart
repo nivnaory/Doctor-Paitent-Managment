@@ -297,7 +297,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
         dialogType: DialogType.INFO,
         animType: AnimType.BOTTOMSLIDE,
         title: 'Hello',
-        desc: 'your  appointment is ready press ok to start',
+        desc: 'your  appointment is ready! Press ok to start',
         btnOkOnPress: () {
           //this is need to return a new watinigPaitentList
           //so need to find the current doctor and to update his list
@@ -320,11 +320,6 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
               this.widget.doctors[index].waitingPaitentList.clear();
             }
           });
-
-          //find doctor by email
-
-          //user press ok and now to doctor is again unavailable
-          // for x period of time!
         })
       ..show();
   }
