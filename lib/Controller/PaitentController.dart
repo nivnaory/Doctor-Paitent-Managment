@@ -11,7 +11,7 @@ class PaitentController {
       Firestore.instance.collection("Doctors");
   final CollectionReference paitentCollection =
       Firestore.instance.collection("Paitents");
-  PaitentController();
+  PaitentController() {}
 
   Future<bool> registerPaitnet(
       String email, String password, String fullName) async {
@@ -75,7 +75,7 @@ class PaitentController {
 
         waitingList.add(waitingPaitent);
       });
-
+      print("i have read" + waitingList.length.toString());
       return Future.value(waitingList);
     } catch (e) {
       print(e);

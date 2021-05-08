@@ -108,22 +108,21 @@ class DoctorController {
       String doctorEmail, String paitentEmail, String paitentName) async {
     DateTime now = DateTime.now();
     try {
-      Future<bool> isAllReadyExsist =
-          checkIfPaitentNotAllReadyInWaitingList(doctorEmail, paitentEmail);
-      isAllReadyExsist.then((value) async {
-        if (value == false) {
-          await doctorCollection
-              .document(doctorEmail)
-              .collection("paitents_waiting")
-              .add({'paitent': paitentEmail, "time": now, "name": paitentName});
-          return Future.value(true);
-        }
-      });
+      /*
+      bool isAllReadyExsist = await checkIfPaitentNotAllReadyInWaitingList(
+          doctorEmail, paitentEmail);
+           if (isAllReadyExsist == false) {
+          */
 
-      return Future.value(false);
+      await doctorCollection
+          .document(doctorEmail)
+          .collection("paitents_waiting")
+          .add({'paitent': paitentEmail, "time": now, "name": paitentName});
+
+      return Future.value(true);
     } catch (e) {
       print(e);
-      return Future.value(true);
+      return Future.value(false);
     }
   }
 
@@ -151,17 +150,16 @@ class DoctorController {
 
   Future<bool> removerPaitnetFromWaitingList(
       String doctorEmail, String paitentEmail) async {
-    Firestore.instance
-        .collection("Doctors")
-        .document(doctorEmail)
-        .collection("paitents_waiting")
-        .where('paitent', isEqualTo: paitentEmail)
-        .getDocuments()
-        .then((value) {
-      value.documents.single.reference.delete();
-    });
-
     try {
+      await doctorCollection
+          .document(doctorEmail)
+          .collection("paitents_waiting")
+          .where('paitent', isEqualTo: paitentEmail)
+          .getDocuments()
+          .then((value) {
+        value.documents.single.reference.delete();
+      });
+
       return Future.value(true);
     } catch (e) {
       print(e);
@@ -171,7 +169,7 @@ class DoctorController {
 
   Future<bool> updateDoctor(String doctorEmail, bool isAvailable) async {
     try {
-      doctorCollection
+      await doctorCollection
           .document(doctorEmail)
           .updateData({"isAvailable": isAvailable});
       return Future.value(true);

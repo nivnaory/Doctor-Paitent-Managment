@@ -5,13 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:homephiys/Controller/DoctorController.dart';
+import 'package:homephiys/Controller/PaitentController.dart';
 import 'package:homephiys/Entitys/Doctor.dart';
 import 'package:homephiys/Entitys/Paitnet.dart';
+import 'package:homephiys/Entitys/WaitingPaitent.dart';
 import 'package:homephiys/Pages/WaitingForAppointmentScreen.dart';
 import 'package:homephiys/utilitis/constant.dart';
 
 class PaitnetHomePageScreen extends StatefulWidget {
-  StreamController<Doctor> streamController = StreamController();
+  //StreamController<Doctor> streamController = StreamController();
   StreamController<bool> streamControllerNotification =
       StreamController<bool>.broadcast();
   _PaitnetHomePageScreen createState() => _PaitnetHomePageScreen();
@@ -23,6 +25,7 @@ class PaitnetHomePageScreen extends StatefulWidget {
   Paitent currentPaitent;
   int paitentCounter = 0;
   final DoctorController dcontroller = DoctorController();
+  final PaitentController pcontroller = PaitentController();
   PaitnetHomePageScreen(
       {@required this.doctors, @required this.currentPaitent});
 }
@@ -218,7 +221,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                               animType: AnimType.BOTTOMSLIDE,
                               title: ' Sorry',
                               desc:
-                                  'this Doctor is anavilable right now,to enter to the waiting list  press ok or chancel',
+                                  'this Doctor is Unavilable right now,to enter to the waiting list  press ok or chancel',
                               btnOkOnPress: () {
                                 //update the db
                                 Future<bool> f = this
@@ -231,6 +234,27 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                                             .email,
                                         this.widget.currentPaitent.email,
                                         this.widget.currentPaitent.name);
+
+                                //read the new waitingList
+                                Future<List<WaitingPaitent>> futureWaiting =
+                                    this
+                                        .widget
+                                        .pcontroller
+                                        .getPaitnetWaitingList(
+                                            this.widget.doctors[index].email);
+                                futureWaiting.then((value) {
+                                  this
+                                      .widget
+                                      .doctors[index]
+                                      .waitingPaitentList = value;
+                                  print("im here!!!!! niv naory " +
+                                      value.toString());
+                                  print(this
+                                      .widget
+                                      .doctors[index]
+                                      .waitingPaitentList
+                                      .toString());
+                                });
 
                                 f.then((value) {
                                   Navigator.push(
@@ -293,6 +317,8 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
       querySnapshot.documentChanges.forEach((element) {
         // if db modifed
         if (element.type.index == modifed) {
+          print("length" +
+              this.widget.doctors[2].waitingPaitentList.length.toString());
           for (int i = 0; i < this.widget.doctors.length; i++) {
             if (element.document.data['email'] ==
                     this.widget.doctors[i].email &&
@@ -324,18 +350,25 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
           this.widget.dcontroller.removerPaitnetFromWaitingList(
               this.widget.doctors[index].email,
               this.widget.currentPaitent.email);
+          print("im after remove!!!");
 
           this
               .widget
               .dcontroller
               .updateDoctor(this.widget.doctors[index].email, false);
-          /*
-          this
+
+          Future<List<WaitingPaitent>> futureWaiting = this
               .widget
-              .doctors[index]
-              .waitingPaitentList
-              .remove(this.widget.doctors[index].waitingPaitentList[0]);
-*/
+              .pcontroller
+              .getPaitnetWaitingList(this.widget.doctors[index].email);
+          futureWaiting.then((value) {
+            if (value.isNotEmpty)
+              this.widget.doctors[index].waitingPaitentList = value;
+            else {
+              this.widget.doctors[index].waitingPaitentList.clear();
+            }
+            print("im here!!!!!" + value.toString());
+          });
 
           //find doctor by email
 
