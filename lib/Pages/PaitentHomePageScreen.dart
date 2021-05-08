@@ -231,6 +231,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                                             .email,
                                         this.widget.currentPaitent.email,
                                         this.widget.currentPaitent.name);
+
                                 f.then((value) {
                                   Navigator.push(
                                       context,
@@ -323,17 +324,18 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
           this.widget.dcontroller.removerPaitnetFromWaitingList(
               this.widget.doctors[index].email,
               this.widget.currentPaitent.email);
-          //need to change this!
+
           this
               .widget
               .dcontroller
               .updateDoctor(this.widget.doctors[index].email, false);
-
+          /*
           this
               .widget
               .doctors[index]
               .waitingPaitentList
-              .remove(this.widget.currentPaitent.email);
+              .remove(this.widget.doctors[index].waitingPaitentList[0]);
+*/
 
           //find doctor by email
 

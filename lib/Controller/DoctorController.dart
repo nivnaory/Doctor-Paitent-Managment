@@ -67,11 +67,13 @@ class DoctorController {
             element['email'], element['name'].toString(), isAvailable);
         alldoctors.add(newDoctor);
 
+        /*
         Future<List<WaitingPaitent>> futureWaitingPaitent =
             pController.getPaitnetWaitingList(element['email'].toString());
         futureWaitingPaitent.then((waitingPaitent) {
           newDoctor.waitingPaitentList = waitingPaitent;
         });
+        */
       });
       return Future.value(alldoctors);
     } catch (e) {

@@ -204,12 +204,22 @@ Widget _buildLoginBtn(
             controller.loginPaitent(email.text.trim(), password.text.trim());
         f.then((value) {
           if (value == true) {
+            //get the paitent from db
             Future<Paitent> futruePaitetn =
                 controller.getPaitent(email.text.trim());
             futruePaitetn.then((paitent) {
+              //get all doctors from db
               Future<List<Doctor>> futureDoctors =
                   dcontroller.getAllDoctorFromDB();
               futureDoctors.then((doctors) {
+                //get all witingPaitent of each doctor from db
+                for (int i = 0; i < doctors.length; i++) {
+                  Future<List<WaitingPaitent>> futureWaiting =
+                      controller.getPaitnetWaitingList(doctors[i].email);
+                  futureWaiting.then((value) {
+                    doctors[i].waitingPaitentList = value;
+                  });
+                }
                 Navigator.push(
                     context,
                     MaterialPageRoute(
