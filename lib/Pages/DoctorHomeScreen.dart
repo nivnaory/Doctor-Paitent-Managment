@@ -210,22 +210,4 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
       },
     )..show();
   }
-
-  void ListinerToDBChange() {
-    this.widget.doctorCollection.snapshots().listen((querySnapshot) {
-      querySnapshot.documentChanges.forEach((element) {
-        if (element.type.index == modifed) {
-          print(element.document.data);
-        }
-      });
-    });
-  }
 }
-/*
-  setState(() {
-            if (this.widget.isAvailable == false)
-              this.widget.isAvailable = true;
-            else
-              this.widget.isAvailable = false;
-          });
-          */

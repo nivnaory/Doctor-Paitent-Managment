@@ -41,44 +41,8 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
 
   void initState() {
     this.widget.dynamicListOfDoctors = List.from(this.widget.doctors);
-    ListinerToDBChange();
-    /*
-    Stream stream = this.widget.streamController.stream;
-    
-    stream.listen((event) {
-      Doctor d = event;
-      if (d.waitingPaitentList.isNotEmpty &&
-          d.waitingPaitentList[0].paitent.email ==
-              this.widget.currentPaitent.email) {
-        // this.widget.streamControllerNotification.add(true);
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.INFO,
-          animType: AnimType.BOTTOMSLIDE,
-          title: 'hello',
-          desc: 'your  appointment is ready press ok to start',
-          btnOkOnPress: () {
-            //this is need to return a new watinigPaitentList
-            //so need to find the current doctor and to update his list
-            this.widget.dcontroller.removerPaitnetFromWaitingList(
-                d.email, this.widget.currentPaitent.email);
-            //need to change this!
-            this.widget.dcontroller.updateDoctor(d.email, false);
-            //find doctor by email
-            Future<Doctor> futrueDocotor =
-                this.widget.dcontroller.getDoctor(d.email);
-            futrueDocotor.then((value) {
-              d = value;
-            });
-            //user press ok and now to doctor is again unavailable
-            // for x period of time!
-          },
-        )..show();
-      } else {
-        print("your not first on the list");
-      }
-    });
-*/
+    listinerToDBChange();
+
     super.initState();
     _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
     _selectedItem = _dropdownMenuItems[0].value;
@@ -304,7 +268,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
     return items;
   }
 
-  void ListinerToDBChange() {
+  void listinerToDBChange() {
     this.widget.doctorCollection.snapshots().listen((querySnapshot) {
       querySnapshot.documentChanges.forEach((element) {
         // if db modifed

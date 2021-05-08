@@ -136,11 +136,9 @@ class DoctorController {
           .collection("paitents_waiting")
           .getDocuments();
       snapshotWaitingPaitent.documents.forEach((element) {
-        print(element['paitent'].toString());
         if (element['paitent'].toString() == paitentEmail) {
           value = true;
         }
-        print(value);
       });
       return Future.value(value);
     } catch (e) {
