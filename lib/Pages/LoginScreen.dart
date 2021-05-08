@@ -210,8 +210,6 @@ Widget _buildLoginBtn(
               Future<List<Doctor>> futureDoctors =
                   dcontroller.getAllDoctorFromDB();
               futureDoctors.then((doctors) {
-                print("im after get all doctors");
-
                 Navigator.push(
                     context,
                     MaterialPageRoute(

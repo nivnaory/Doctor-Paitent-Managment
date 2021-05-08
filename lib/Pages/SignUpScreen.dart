@@ -11,6 +11,7 @@ class SignUpScreen extends StatelessWidget {
   final email = TextEditingController();
   final password = TextEditingController();
   final fullName = TextEditingController();
+  bool is_valid_password = false;
   PaitentController paitentController = new PaitentController();
   @override
   Widget build(BuildContext context) {
@@ -144,6 +145,7 @@ Widget _buildPasswordTF(TextEditingController password) {
         child: TextField(
           obscureText: true,
           controller: password,
+          // ignore: deprecated_member_use
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'OpenSans',
@@ -184,7 +186,7 @@ Widget _buildSignUpBtn(
                 MaterialPageRoute(builder: (context) => LoginScreen()));
           } else {
             Toast.show(
-                "Email or password are not correct \nPassword should be at least 6 charactres or email allready exsist please try again",
+                "Password must be at least 6 in length or email is already in use ",
                 context,
                 duration: Toast.LENGTH_LONG,
                 gravity: Toast.BOTTOM);

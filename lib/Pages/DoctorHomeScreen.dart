@@ -143,9 +143,18 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
           setState(() {
             if (this.widget.isAvailable == false) {
               if (this.widget.currentDoctor.waitingPaitentList.isEmpty) {
+                this
+                    .widget
+                    .dcontroller
+                    .updateDoctor(this.widget.currentDoctor.email, true);
                 this.widget.isAvailable = true;
               } else {
                 showDialog();
+                this
+                    .widget
+                    .currentDoctor
+                    .waitingPaitentList
+                    .remove(this.widget.currentDoctor.waitingPaitentList[0]);
               }
             } else {
               this.widget.isAvailable = false;
@@ -194,14 +203,6 @@ class _DoctorHomeScreen extends State<DoctorHomeScreen> {
             .widget
             .dcontroller
             .updateDoctor(this.widget.currentDoctor.email, true);
-        Future<List<WaitingPaitent>> futureWaitingPaitent = this
-            .widget
-            .pcontroller
-            .getPaitnetWaitingList(this.widget.currentDoctor.email);
-        futureWaitingPaitent.then((waitingPaitent) {
-          this.widget.currentDoctor.waitingPaitentList = waitingPaitent;
-          print(this.widget.currentDoctor.waitingPaitentList);
-        });
       },
     )..show();
   }

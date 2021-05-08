@@ -19,7 +19,9 @@ class PaitnetHomePageScreen extends StatefulWidget {
       Firestore.instance.collection("Doctors");
   List<Doctor> doctors = [];
   List<Doctor> dynamicListOfDoctors = [];
+  List<bool> is_in_waiting_list = [false, false, false, false, true, true];
   Paitent currentPaitent;
+  int paitentCounter = 0;
   final DoctorController dcontroller = DoctorController();
   PaitnetHomePageScreen(
       {@required this.doctors, @required this.currentPaitent});
@@ -37,12 +39,14 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
   void initState() {
     this.widget.dynamicListOfDoctors = List.from(this.widget.doctors);
     ListinerToDBChange();
+    /*
     Stream stream = this.widget.streamController.stream;
+    
     stream.listen((event) {
       Doctor d = event;
-      if (d.waitingPaitentList.isNotEmpty) if (d
-              .waitingPaitentList[0].paitent.email ==
-          this.widget.currentPaitent.email) {
+      if (d.waitingPaitentList.isNotEmpty &&
+          d.waitingPaitentList[0].paitent.email ==
+              this.widget.currentPaitent.email) {
         // this.widget.streamControllerNotification.add(true);
         AwesomeDialog(
           context: context,
@@ -55,6 +59,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
             //so need to find the current doctor and to update his list
             this.widget.dcontroller.removerPaitnetFromWaitingList(
                 d.email, this.widget.currentPaitent.email);
+            //need to change this!
             this.widget.dcontroller.updateDoctor(d.email, false);
 
             //find doctor by email
@@ -71,7 +76,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
         print("your not first on the list");
       }
     });
-
+*/
     super.initState();
     _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
     _selectedItem = _dropdownMenuItems[0].value;
@@ -215,6 +220,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                               desc:
                                   'this Doctor is anavilable right now,to enter to the waiting list  press ok or chancel',
                               btnOkOnPress: () {
+                                //update the db
                                 Future<bool> f = this
                                     .widget
                                     .dcontroller
@@ -248,7 +254,7 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
                             )..show();
                           }
                         },
-                        color: Colors.red,
+                        color: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -284,19 +290,57 @@ class _PaitnetHomePageScreen extends State<PaitnetHomePageScreen> {
   void ListinerToDBChange() {
     this.widget.doctorCollection.snapshots().listen((querySnapshot) {
       querySnapshot.documentChanges.forEach((element) {
+        // if db modifed
         if (element.type.index == modifed) {
           for (int i = 0; i < this.widget.doctors.length; i++) {
             if (element.document.data['email'] ==
                     this.widget.doctors[i].email &&
-                element.document.data['isAvailable'] == true &&
-                this.widget.doctors[i].isAvilable == false) {
+                element.document.data['isAvailable'] == true) {
               this.widget.doctors[i].isAvilable = true;
-              this.widget.streamController.add(this.widget.doctors[i]);
+
+              if (this.widget.doctors[i].waitingPaitentList.isNotEmpty &&
+                  this.widget.doctors[i].waitingPaitentList[0].paitent.email ==
+                      this.widget.currentPaitent.email) showDialog(i);
+            } else if (element.document.data['isAvailable'] == false) {
+              this.widget.doctors[i].isAvilable = false;
             }
           }
         }
       });
     });
+  }
+
+  void showDialog(int index) {
+    AwesomeDialog(
+        context: context,
+        dialogType: DialogType.INFO,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'hello',
+        desc: 'your  appointment is ready press ok to start',
+        btnOkOnPress: () {
+          //this is need to return a new watinigPaitentList
+          //so need to find the current doctor and to update his list
+          this.widget.dcontroller.removerPaitnetFromWaitingList(
+              this.widget.doctors[index].email,
+              this.widget.currentPaitent.email);
+          //need to change this!
+          this
+              .widget
+              .dcontroller
+              .updateDoctor(this.widget.doctors[index].email, false);
+
+          this
+              .widget
+              .doctors[index]
+              .waitingPaitentList
+              .remove(this.widget.currentPaitent.email);
+
+          //find doctor by email
+
+          //user press ok and now to doctor is again unavailable
+          // for x period of time!
+        })
+      ..show();
   }
 
   Doctor findDoctorByEmail(String _email) {

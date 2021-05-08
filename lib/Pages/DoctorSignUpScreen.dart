@@ -220,6 +220,12 @@ Widget _buildSignUpBtn(
           if (value == true) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DoctorLoginScreen()));
+          } else {
+            Toast.show(
+                "Password must be at least 6 in length or email is already in use ",
+                context,
+                duration: Toast.LENGTH_LONG,
+                gravity: Toast.BOTTOM);
           }
         });
       },

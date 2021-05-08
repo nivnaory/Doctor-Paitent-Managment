@@ -11,4 +11,8 @@ class WaitingPaitent {
 
   Paitent get paitent => _paitent;
   DateTime get arrivalTime => _time;
+
+  set paitnet(Paitent paitent) {
+    _paitent = paitent;
+  }
 }

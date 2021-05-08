@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,7 +111,18 @@ class _WaitingForAppointment extends State<WaitingForAppointmentScreen> {
         elevation: 5.0,
         onPressed: () {
           if (this.widget.is_got_notification == false) {
-            print(" implement remove this account from the waiting list");
+            AwesomeDialog(
+                context: context,
+                dialogType: DialogType.ERROR,
+                animType: AnimType.BOTTOMSLIDE,
+                title: 'Are you sure?',
+                desc: 'are you sure you want to cancel the   appointment ',
+                btnCancelOnPress: () {
+                  this.widget.dcontroller.removerPaitnetFromWaitingList(
+                      this.widget.doctorEmail,
+                      this.widget.currentPaitent.email);
+                })
+              ..show();
           } else {
             Toast.show(
                 "cannot cancel your appointment after you get a notification  ",
@@ -150,7 +162,7 @@ class _WaitingForAppointment extends State<WaitingForAppointmentScreen> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Paitnet Waiting List'),
+                  title: Text('Paitent Waiting List'),
                   content: setupAlertDialoadContainer(),
                 );
               });
